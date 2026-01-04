@@ -1,0 +1,7 @@
+export type Cast = {
+    id: number;
+    name: string;
+    character: string;
+    profile_path: string | null;
+};
+//キャスト名の型
