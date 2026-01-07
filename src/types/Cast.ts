@@ -4,4 +4,3 @@ export type Cast = {
     character: string;
     profile_path: string | null;
 };
-//キャスト名の型
