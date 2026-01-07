@@ -1,6 +1,5 @@
 import type { Video } from "../types/Video";
 import { TMDB_BASE_URL,TMDB_LANGUAGE } from "./tmdb";
-//import react from '@vitejs/plugin-react';
 
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 
