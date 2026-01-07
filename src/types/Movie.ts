@@ -8,4 +8,3 @@ export type Movie = {
     genres: {id: number; name: string}[];
     production_companies: {id: number; name: string}[];
 };
-//映画のデータ型
