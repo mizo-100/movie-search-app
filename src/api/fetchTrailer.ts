@@ -9,18 +9,6 @@ export const fetchTrailer = async(movieId:string) : Promise<Video[]> => {
         `${TMDB_BASE_URL}/movie/${movieId}/videos?api_key=${TOKEN}&language=${TMDB_LANGUAGE}`
     );
 
-    //if (!res.ok) {
-    //    throw new Error("Failed to fetch trailer");
-    //}
-
-    //const data : {results:Video[]} = await res.json();
     const data = await res.json();
     return data.results;
-
-    //const trailer = data.results.find(
-    //    (v: Video) =>
-    //        v.site === "YouTube" && v.type === "Trailer" && v.official === true
-    //);
-
-    //return trailer ?? null;
 };
