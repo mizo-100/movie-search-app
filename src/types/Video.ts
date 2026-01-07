@@ -4,5 +4,4 @@ export type Video = {
     name: string;
     site: "YouTube";
     type: "Trailer" | "Teaser" | string;
-    //official: boolean;
 };
