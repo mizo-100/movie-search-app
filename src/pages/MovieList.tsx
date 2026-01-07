@@ -29,7 +29,6 @@ const MovieList = () => {
         <div className="container">
             <h3>🔍映画検索</h3>
 
-            {/*検索フォーム*/}
             <form onSubmit={handleSearch} className="search-form">
                 <input
                 type="text"
