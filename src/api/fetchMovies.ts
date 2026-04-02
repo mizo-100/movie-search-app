@@ -1,17 +1,9 @@
 import type { Movie } from "../types/Movie";
-import { TMDB_BASE_URL, TMDB_LANGUAGE } from "./tmdb";
+import { tmdbFetch } from "./tmdb";
 
-const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
-
-export const fetchMovies = async(): Promise<Movie[]> => {
-    const res = await fetch(
-        `${TMDB_BASE_URL}/movie/popular?api_key=${TOKEN}&language=${TMDB_LANGUAGE}`
-    );
-
-    if (!res.ok) {
-        throw new Error("映画データの取得に失敗しました");
-    }
-
-    const data = await res.json();
+export const fetchMovies = async (): Promise<Movie[]> => {
+    const data = await tmdbFetch("/movie/popular");
     return data.results;
 };
+
+//一覧用

@@ -6,3 +6,5 @@ export type Video = {
     type: "Trailer" | "Teaser" | string;
     //official: boolean;
 };
+
+//予告編（YouTube）の型

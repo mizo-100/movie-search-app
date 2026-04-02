@@ -4,8 +4,10 @@ export type Movie = {
     poster_path: string | null;
     overview: string | null;
     vote_average: number;
+    backdrop_path: string;
     release_date: string;
     genres: {id: number; name: string}[];
     production_companies: {id: number; name: string}[];
 };
+
 //映画のデータ型

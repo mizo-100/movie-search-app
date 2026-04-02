@@ -1,10 +1,6 @@
 import type { Movie } from '../types/Movie';
 
-type Props = {
-    movie: Movie;
-};
-
-const MovieCard = ({movie}:Props) => {
+const MovieCard = ({ movie }: { movie: Movie }) => {
     return (
         <div className="card">
             {movie.poster_path?(
@@ -15,8 +11,10 @@ const MovieCard = ({movie}:Props) => {
             ) : (
               <div className="no-image">No Image</div>
             )}
-
-            <h3>{movie.title}</h3>
+          
+            <div className="card-content">
+                <h3>{movie.title.length > 15 ? movie.title.substring(0, 15) + "..." : movie.title}</h3>               
+            </div>
         </div>
     );
 };

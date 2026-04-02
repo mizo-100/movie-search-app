@@ -10,21 +10,55 @@ const MovieList = () => {
     const [keyword,setKeyword] = useState("");
 
     useEffect(() => {
+        const loadInitialMovies = async() => {
+            try {
+                const data = await fetchMovies();
+                setMovies(data);
+            } catch (error) {
+                console.error("エラーだよ",error);
+            }
+        };
+        
+        loadInitialMovies();
+    },[]);
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if(!keyword.trim()) {
+        const data = await fetchMovies();
+        setMovies(data);
+        return;
+        }
+        
+        const results = await searchMovies(keyword);
+        setMovies(results);
+    };
+
+   /* useEffect(() => {
         fetchMovies().then(setMovies);
     },[]);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
 
+
         if (!keyword.trim()) {
             fetchMovies().then(setMovies);
             return;
         }
 
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+}
+
         const results = await searchMovies(keyword);
         setMovies(results);
     };
 
+    */
     return (
         <div className="container">
             <h3>🔍映画検索</h3>

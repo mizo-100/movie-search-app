@@ -1,68 +1,59 @@
-import { useEffect,useState } from "react";
-import { useParams,Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { fetchMoviesDetail } from "../api/fetchMovieDetail";
+import { fetchCast } from "../api/fetchCast";
+import { fetchTrailer } from "../api/fetchTrailer";
 import type { Movie } from "../types/Movie";
-import { TMDB_BASE_URL, TMDB_LANGUAGE } from "../api/tmdb";
 import type { Cast } from "../types/Cast";
 import type { Video } from "../types/Video";
 
-const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
-
 const MovieDetail = () => {
-    const { id } = useParams();
-    const [movie,setMovie] = useState<Movie | null>(null);
-    const [cast,setCast] = useState<Cast[]>([]);
-    const [loading,setLoading] = useState(true);
-    const [trailer,setTrailer] = useState<Video | null>(null);
+    const { id } = useParams<{ id: string }>();
+    //映画のAPI番号
+    const [movie, setMovie] = useState<Movie | null>(null);
+    //映画のメイン情報
+    const [cast, setCast] = useState<Cast[]>([]);
+    //キャスト情報
+    const [trailer, setTrailer] = useState<Video | null>(null);
+    //予告編情報
+    const [loading, setLoading] = useState(true);
+    //読み込み中表示
 
     useEffect(() => {
-        if (!id) return;
+        const getAllData = async () => {
+            if (!id) return;
+            
+            try {
+                setLoading(true);
+                // 1. 3つのAPIを同時に叩く（共通化した関数たち）
+                const [movieData, castData, videoData] = await Promise.all([
+                    fetchMoviesDetail(id),
+                    fetchCast(id),
+                    fetchTrailer(id)
+                ]);
 
-        fetch(
-            `${TMDB_BASE_URL}/movie/${id}?api_key=${TOKEN}&language=${TMDB_LANGUAGE}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setMovie(data);
-                setLoading(false);
-            });
-    },[id]);
+                // 2. データをセットする
+                setMovie(movieData);
+                setCast(castData.slice(0, 6)); // 上位6人のキャスト
 
-
-    useEffect(() => {
-        if (!id) return;
-
-        fetch(
-            `${TMDB_BASE_URL}/movie/${id}/credits?api_key=${TOKEN}&language=${TMDB_LANGUAGE}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setCast(data.cast.slice(0,6));
-            });
-    },[id]);
-
-    
-    
-    useEffect(() => {
-        if (!id) return;
-
-
-    fetch(
-        `${TMDB_BASE_URL}/movie/${id}/videos?api_key=${TOKEN}&language=${TMDB_LANGUAGE}`
-    )
-            .then((res) => res.json())
-            .then((data:{ results: Video[] }) => {
-                const trailerVideo = data.results.find(
-                    (video) =>
-                        video.site === "YouTube" && video.type === "Trailer"
+                // 3. 予告編を探す（videoDataそのものが配列なので直接find）
+                const trailerVideo = videoData.find(
+                    (v: Video) => v.site === "YouTube" && v.type === "Trailer"
                 );
-                if (trailerVideo) {
-                    setTrailer(trailerVideo);
-                }
-            });
-    },[id]);
+                setTrailer(trailerVideo || null);
 
-    if (loading) return <p>読み込み中．．．</p>;
-    if (!movie) return <p>映画が見つかりません</p>;
+            } catch (error) {
+                console.error("データの取得に失敗しました:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getAllData();
+    }, [id]);
+
+    if (loading) return <div className="loading">読み込み中...</div>;
+    if (!movie) return <div className="error">映画が見つかりませんでした</div>;
 
     return (
         <div className="container">
