@@ -34,7 +34,7 @@ const MovieDetail = () => {
 
                 // 2. データをセットする
                 setMovie(movieData);
-                setCast(castData.slice(0, 6)); // 上位6人のキャスト
+                setCast(castData.slice(0, 6)); // 上位6人のキャスト（多く入れたいなら数を増やす）
 
                 // 3. 予告編を探す（videoDataそのものが配列なので直接find）
                 const trailerVideo = videoData.find(

@@ -35,35 +35,10 @@ const MovieList = () => {
         setMovies(results);
     };
 
-   /* useEffect(() => {
-        fetchMovies().then(setMovies);
-    },[]);
-
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-
-        if (!keyword.trim()) {
-            fetchMovies().then(setMovies);
-            return;
-        }
-
-
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-}
-
-        const results = await searchMovies(keyword);
-        setMovies(results);
-    };
-
-    */
     return (
         <div className="container">
             <h3>🔍映画検索</h3>
 
-            {/*検索フォーム*/}
             <form onSubmit={handleSearch} className="search-form">
                 <input
                 type="text"
@@ -71,8 +46,9 @@ const MovieList = () => {
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="映画タイトルを入力"
                 />
-
-                <button type="submit">検索</button>
+                <button type="submit">
+                    検索
+                </button>
             </form>
             <h2>上位映画一覧</h2>
 
